@@ -1,0 +1,11 @@
+# This script exports DDPs to JPEG at 300 DPI with a string appended based on a user-defined field
+
+... field_name = "**NAME**"  # DDP PageName                     # Set field_name, replace "**NAME**" with a field in the index layer
+... 
+... mxd = arcpy.mapping.MapDocument("CURRENT")                  # Set current open MXD as mxd
+... for i in range(1, mxd.dataDrivenPages.pageCount + 1):       # Loops through DDPs
+...   mxd.dataDrivenPages.currentPageID = i                     # Sets current PageID as i
+...   row = mxd.dataDrivenPages.pageRow                         # Sets current pageRow as row
+...   arcpy.mapping.ExportToJPEG(mxd, r"C:\folder\Example Map-" + row.getValue(field_name) + ".jpg", resolution=300)
+                                                                # Choose path to file. "field_name" is appended to the end of the file
+... del mxd
