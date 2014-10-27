@@ -1,0 +1,10 @@
+# This script will export data driven pages to JPEG at 300 DPI, and append an incrementing number to the end.
+# I generally use this from within an open map through the Python Module. To use this as a stand-along script
+# you would need to specify the .mxd path and "import arcpy" at the beginning.
+
+mxd = arcpy.mapping.MapDocument("CURRENT")                        # Selects current open MXD
+... for pageNum in range(1, mxd.dataDrivenPages.pageCount + 1):   # Loops through DDPs
+...   mxd.dataDrivenPages.currentPageID = pageNum                 # Sets current DDP as pageNum
+...   arcpy.mapping.ExportToJPEG(mxd, r"C:\folder\file\Example Map-" + str(pageNum) + ".jpg", resolution=300)
+                                                                  # prints Example Map-1.jpg, in this instance. Set your own filepath and filename
+... del mxd                                                       # Clears mxd from memory
