@@ -1,16 +1,25 @@
 import arcpy, os														
 
+#set directories for PDFs and then establish a list of the .pdfs within
 files_dir_1 = "C:\Temp\PDF_Test"										
 files_dir_2 = "C:\Temp\PDF_Test\Photos"									
 pdf_files_1 = [f for f in os.listdir(files_dir_1) if f.endswith("pdf")]	
 pdf_files_2 = [f for f in os.listdir(files_dir_2) if f.endswith("pdf")]	
 
-
-for f1, f2 in zip(pdf_files_1, pdf_files_2):							
-	pdfPath = os.path.join(r"C:\Temp\PDF_Test\ASNF_Site_Card-") 		
-	out_pdf_file = arcpy.mapping.PDFDocumentCreate(pdfPath + f1)		
-	print f1, f2														
-	out_pdf_file.appendPages(os.path.join(files_dir_1,f1))												
+#loop through the two directories at once, making pairs of the PDFs to be merged ***the PDFs must be in the order in which you want them associated - i.e. (Folder 1, pdf 1; Folder 2 pdf 1); (Folder 1, pdf 2; Folder 2, pdf 2), etc...***
+for f1, f2 in zip(pdf_files_1, pdf_files_2):
+	#this sets the path of the output PDF
+	pdfPath = os.path.join(r"C:\Temp\PDF_Test\ASNF_Site_Card-") 	
+	
+	#this is the variable for the output PDF
+	out_pdf_file = arcpy.mapping.PDFDocumentCreate(pdfPath + f1)
+	
+	#on-screen verification of pairs
+	print "Appending ", f1, f2													
+	#appends PDFs
+	out_pdf_file.appendPages(os.path.join(files_dir_1,f1))							
 	out_pdf_file.appendPages(os.path.join(files_dir_2,f2))
+	
+	#prints new PDF and then removes it from memory
 	out_pdf_file.saveAndClose()											
 	del out_pdf_file	
